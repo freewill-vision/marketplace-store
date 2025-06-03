@@ -62,7 +62,7 @@ jobs:
           --data '{
             "head_commit": {
               "id": "${{ steps.commit-info.outputs.hash }}",
-              "message": '"${{ steps.commit-info.outputs.message }}"'
+              "message": "${{ steps.commit-info.outputs.message }}"
             },
             "ref": "${{ github.ref }}"
           }'
