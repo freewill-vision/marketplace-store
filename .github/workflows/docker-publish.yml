@@ -70,7 +70,7 @@ jobs:
               }
             }')
           
-          curl -v -X POST "https://dokploy.stg.freewill.vision/api/deploy/$DOKPLOY_STORE_ID" \
+          curl -X POST "https://dokploy.stg.freewill.vision/api/deploy/$DOKPLOY_STORE_ID" \
           -H "Content-Type: application/json" \
           -H "x-github-event: push" \
           --data "$PAYLOAD"
