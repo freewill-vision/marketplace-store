@@ -43,10 +43,28 @@ jobs:
             NEXT_PUBLIC_ALGOLIA_SEARCH_KEY=${{ secrets.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY }}
             NEXT_PUBLIC_TALKJS_APP_ID=${{ vars.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY }}
 
+      - name: Get last commit info
+        id: commit-info
+        run: |
+          # Obtener el mensaje del último commit
+          COMMIT_MESSAGE=$(git log -1 --pretty=%B | jq -R -s -c '.')
+          echo "message=$COMMIT_MESSAGE" >> $GITHUB_OUTPUT
+          
+          # Obtener el hash del último commit
+          COMMIT_HASH=$(git rev-parse HEAD)
+          echo "hash=$COMMIT_HASH" >> $GITHUB_OUTPUT
+
       - name: Notify Dokploy
         run: |
           curl -X POST "https://dokploy.stg.freewill.vision/api/deploy/$DOKPLOY_STORE_ID" \
           -H "Content-Type: application/json" \
-          --data '{"image_tag":"latest"}'
+          -H "x-github-event: push" \
+          --data '{
+            "head_commit": {
+              "id": "${{ steps.commit-info.outputs.hash }}",
+              "message": "${{ steps.commit-info.outputs.message }}"
+            },
+            "ref": "${{ github.ref }}"
+          }'
         env:
           DOKPLOY_STORE_ID: ${{ secrets.DOKPLOY_STORE_ID }}
