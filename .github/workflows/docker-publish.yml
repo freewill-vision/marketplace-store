@@ -56,7 +56,7 @@ jobs:
 
       - name: Notify Dokploy
         run: |
-          curl -X POST "https://dokploy.stg.freewill.vision/api/deploy/$DOKPLOY_STORE_ID" \
+          curl -X POST "https://api.dokploy.com/webhooks/deploy/$DOKPLOY_STORE_ID" \
           -H "Content-Type: application/json" \
           -H "x-github-event: push" \
           --data '{
