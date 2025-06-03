@@ -31,7 +31,7 @@ export const AlgoliaProductsListing = ({
   const facetFilters: string = getFacedFilters(searchParamas)
   const page: number = +(searchParamas.get("page") || 1)
   const query: string = searchParamas.get("query") || ""
-
+    //TODO FIX FILTERS
   const filters = `${
     seller_handle
       ? `NOT seller:null AND seller.handle:${seller_handle} AND `
@@ -51,7 +51,7 @@ export const AlgoliaProductsListing = ({
       <Configure
         query={query}
         hitsPerPage={PRODUCT_LIMIT}
-        filters={filters}
+        // filters={filters}
         page={page - 1}
       />
       <ProductsListing />
@@ -89,11 +89,11 @@ const ProductsListing = () => {
       <div className="hidden md:block">
         <ProductListingActiveFilters />
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-4 mt-6">
+      <div className="md:flex gap-4">
         <div>
           <AlgoliaProductSidebar />
         </div>
-        <div className="w-full col-span-3">
+        <div className="w-full">
           {!items.length ? (
             <div className="text-center w-full my-10">
               <h2 className="uppercase text-primary heading-lg">no results</h2>
@@ -103,7 +103,7 @@ const ProductsListing = () => {
             </div>
           ) : (
             <div className="w-full">
-              <ul className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3">
+              <ul className="flex flex-wrap gap-4">
                 {items.map((hit) => (
                   <ProductCard key={hit.objectID} product={hit} />
                 ))}
